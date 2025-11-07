@@ -11,18 +11,19 @@ public class PlayerAirState : PlayerBaseState
 
     public override void Update()
     {
+        var input = stateMachine.Input;
         // component while in air
-        jump.ApplyExtraGravity();
+        jump.ApplyExtraGravity(input.JumpHeld);
         jump.CheckHardLanding();
+    }
 
+    public override void FixedUpdate() {
         // transition to grounded state
-        if (ground.IsGrounded() && rb.velocity.y < 0.1f)
+        if (ground.IsGrounded() && Mathf.Abs(rb.velocity.y) < 0.1f)
         {
             stateMachine.ChangeState(stateMachine.GroundedState);
         }
     }
-
-    public override void FixedUpdate() {}
 
     public override void Exit() {}
 }

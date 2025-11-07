@@ -95,9 +95,6 @@ public class JumpComponent : MonoBehaviour
             shouldPerformJump = false;
         }
 
-        ApplyExtraGravity();
-        CheckHardLanding();
-
         if (isCharging && !groundChecker.IsGrounded())
         {
             isCharging = false;
@@ -156,7 +153,7 @@ public class JumpComponent : MonoBehaviour
         }
     }
 
-    public void ApplyExtraGravity()
+    public void ApplyExtraGravity(bool jumpHeld)
     {
         if (rb.velocity.y < 0f)
         {
@@ -164,7 +161,7 @@ public class JumpComponent : MonoBehaviour
             // Limit fall speed
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
         }
-        else if (rb.velocity.y > 0f && !isCharging)
+        else if (rb.velocity.y > 0f && !jumpHeld)
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.deltaTime;
         }

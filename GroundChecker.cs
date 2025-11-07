@@ -12,7 +12,6 @@ public class GroundChecker : MonoBehaviour
     }
 
     [SerializeField] private GroundCheckPoint[] checkPoints = new GroundCheckPoint[3];
-    //[SerializeField] private Vector2 checkSize = new Vector2(0.25f, 0.09f);
     [SerializeField] private int requiredGroundPoints = 2;
     [SerializeField] private LayerMask groundLayer;
 

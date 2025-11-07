@@ -11,13 +11,21 @@ public class InputHandler : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE
-        HorizontalInput = Input.GetAxisRaw("Horizontal");
-        JumpPressed = Input.GetButtonDown("Jump");
-        JumpHeld = Input.GetButton("Jump");
-        JumpReleased = Input.GetButtonUp("Jump");
-#elif UNITY_IOS || UNITY_ANDROID
-#endif
+        ResetInputs();
+        
+        #if UNITY_EDITOR || UNITY_STANDALONE
+            HorizontalInput = Input.GetAxisRaw("Horizontal");
+            JumpHeld = Input.GetButton("Jump");
+            
+            if (Input.GetButtonDown("Jump"))
+                JumpPressed = true;
+
+            if (Input.GetButtonUp("Jump"))
+                JumpReleased = Input.GetButtonUp("Jump");
+
+        #elif UNITY_IOS || UNITY_ANDROID
+
+        #endif
     }
 
     public void OnMove(float direction) => HorizontalInput = direction;
@@ -25,7 +33,7 @@ public class InputHandler : MonoBehaviour
     public void OnJumpHeld() => JumpHeld = true;
     public void OnJumpReleased() => JumpReleased = true;
 
-    public void ResetInputs()
+    private void ResetInputs()
     {
         JumpPressed = false;
         JumpReleased = false;

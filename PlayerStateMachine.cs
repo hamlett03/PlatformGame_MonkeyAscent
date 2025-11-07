@@ -50,8 +50,6 @@ public class PlayerStateMachine : MonoBehaviour
     {
         currentState.Update();
         Anim.SetVelocityY(Rb.velocity.y);
-
-        Input.ResetInputs();
     }
 
     private void FixedUpdate()
