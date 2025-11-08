@@ -193,6 +193,10 @@ public class JumpComponent : MonoBehaviour
         {
             // trigger hard landing animation
             anim.TriggerHardLand();
+            if (!hasPlayedHardLandSound)
+            {
+                hasPlayedHardLandSound = true;
+            }
         }
     }
 
