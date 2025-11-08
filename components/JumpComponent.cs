@@ -17,6 +17,7 @@ public class JumpComponent : MonoBehaviour
     private Rigidbody2D rb;
     private GroundChecker groundChecker;
     private AnimationController anim;
+    private SoundManager audioManager;
 
     private float jumpChargeTimer = 0f;
     private float jumpDirection = 0f;
@@ -39,7 +40,10 @@ public class JumpComponent : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         groundChecker = GetComponent<GroundChecker>();
         anim = GetComponentInChildren<AnimationController>();
-        gravityMagnitude = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);   
+
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
+
+        gravityMagnitude = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);  
     }
 
     public void StartChargingJump(float horizontalInput)
@@ -104,6 +108,7 @@ public class JumpComponent : MonoBehaviour
         if (groundChecker.IsGrounded() && isJumping && Mathf.Abs(rb.velocity.y) < 0.1f)
         {
             isJumping = false;
+            audioManager.PlaySFX(audioManager.JumpLandingSound);
         }
     }
 
@@ -127,6 +132,7 @@ public class JumpComponent : MonoBehaviour
         rb.velocity = new Vector2(initialVelocityX, initialVelocityY);
         isJumping = true;
         anim.TriggerJump();
+        audioManager.PlaySFX(audioManager.DashSound);
     }
 
     private void DrawJumpTrajectory()
