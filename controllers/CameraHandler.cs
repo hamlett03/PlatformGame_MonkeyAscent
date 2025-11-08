@@ -16,7 +16,6 @@ public class CamerHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-
             player = other.transform;
             playerInside = true;
         }
@@ -35,6 +34,7 @@ public class CamerHandler : MonoBehaviour
             else if (player.position.y < transform.position.y - playerThreshold)
             {
                 MoveCameraTo(cameraTargetPrevious);
+                SoundManager.Instance.PlayCameraSnap();
             }
         }
     }

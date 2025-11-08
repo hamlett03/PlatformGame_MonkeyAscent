@@ -17,7 +17,6 @@ public class JumpComponent : MonoBehaviour
     private Rigidbody2D rb;
     private GroundChecker groundChecker;
     private AnimationController anim;
-    private SoundManager audioManager;
 
     private float jumpChargeTimer = 0f;
     private float jumpDirection = 0f;
@@ -26,6 +25,8 @@ public class JumpComponent : MonoBehaviour
     private bool isCharging = false;
     private bool isJumping = false;
     private bool shouldPerformJump = false;
+    private bool hasPlayedHardLandSound = false;
+    private bool hasLanded = false;
     
     // Cached jump calculations
     private float initialVelocityX = 0f;
@@ -40,10 +41,8 @@ public class JumpComponent : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         groundChecker = GetComponent<GroundChecker>();
         anim = GetComponentInChildren<AnimationController>();
-
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
-
-        gravityMagnitude = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);  
+        gravityMagnitude = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
+        hasLanded = true;
     }
 
     public void StartChargingJump(float horizontalInput)
@@ -105,10 +104,25 @@ public class JumpComponent : MonoBehaviour
             anim.SetChargingJump(false);
         }
 
-        if (groundChecker.IsGrounded() && isJumping && Mathf.Abs(rb.velocity.y) < 0.1f)
-        {
+        if (groundChecker.IsGrounded() && rb.velocity.y < 0.1f && !hasLanded)
+        {            
+            // check if it was hard landing
+            if (hasPlayedHardLandSound)
+            {
+                SoundManager.Instance.PlayHardLanding();
+                hasPlayedHardLandSound = false;
+            }
+            else
+            {
+                SoundManager.Instance.PlayJumpLanding();
+            }
+
             isJumping = false;
-            audioManager.PlaySFX(audioManager.JumpLandingSound);
+            hasLanded = true;
+        }
+        else if (!groundChecker.IsGrounded())
+        {
+            hasLanded = false;
         }
     }
 
@@ -132,7 +146,7 @@ public class JumpComponent : MonoBehaviour
         rb.velocity = new Vector2(initialVelocityX, initialVelocityY);
         isJumping = true;
         anim.TriggerJump();
-        audioManager.PlaySFX(audioManager.DashSound);
+        SoundManager.Instance.PlayJumpRealese();
     }
 
     private void DrawJumpTrajectory()
@@ -174,10 +188,10 @@ public class JumpComponent : MonoBehaviour
     }
 
     public void CheckHardLanding()
-
     { 
         if (!groundChecker.IsGrounded() && rb.velocity.y <= -maxFallSpeed)
         {
+            // trigger hard landing animation
             anim.TriggerHardLand();
         }
     }
