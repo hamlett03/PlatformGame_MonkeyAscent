@@ -36,7 +36,7 @@ public class InputHandler : MonoBehaviour
             HorizontalInput = 0f;
         }
 
-        Debug.Log("Horizontal Input: " + HorizontalInput);
+        // Debug.Log("Horizontal Input: " + HorizontalInput);
     }
 
     public void OnJump(InputAction.CallbackContext context)

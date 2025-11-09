@@ -44,6 +44,8 @@ public class PlayerGroundedState : PlayerBaseState
         {
             stateMachine.ChangeState(stateMachine.AirState);
         }
+
+        Debug.Log("In Grounded State");
     }
 
     public override void FixedUpdate() {}

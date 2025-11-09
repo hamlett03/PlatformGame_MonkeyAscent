@@ -6,10 +6,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
+    private static bool applicationIsQuitting = false;
     public static GameManager Instance
     {
         get
         {
+            if (applicationIsQuitting)
+                return null;
+
             if (instance == null)
             {
                 instance = FindObjectOfType<GameManager>();
@@ -42,10 +46,15 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnApplicationQuit()
+    {
+        applicationIsQuitting = true;
+    }
+
     public void FallsCounted()
     {
         fallCounter++;
-        Debug.Log("Fall Count: " + fallCounter);
+        // Debug.Log("Fall Count: " + fallCounter);
         // notify listeners (UI, analytics, etc.)
         OnFallCountChanged?.Invoke(fallCounter);
     }

@@ -15,6 +15,8 @@ public class PlayerAirState : PlayerBaseState
         // component while in air
         jump.ApplyExtraGravity(input.JumpHeld);
         jump.CheckHardLanding();
+
+        Debug.Log("In Air State");
     }
 
     public override void FixedUpdate() {

@@ -9,15 +9,13 @@ public class CamerHandler : MonoBehaviour
     [SerializeField] private Transform cameraTargetPrevious;
     [SerializeField] private float playerThreshold = 0.1f;
 
-    private bool playerInside = false;
-    private Transform player; 
+    private Transform player;
 
-    private void OnTriggerEnter2D (Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             player = other.transform;
-            playerInside = true;
         }
     }
 
@@ -25,7 +23,6 @@ public class CamerHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerInside = false;
 
             if (player.position.y > transform.position.y + playerThreshold)
             {
@@ -50,7 +47,7 @@ public class CamerHandler : MonoBehaviour
             );
         }
 
-        Debug.Log("Camera snapped to " + target.name);
+        //Debug.Log("Camera snapped to " + target.name);
     }
 
     private void OnDrawGizmos()
