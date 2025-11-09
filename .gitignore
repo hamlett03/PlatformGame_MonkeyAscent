@@ -1,0 +1,5 @@
+# ignore packages files
+Common/
+Controller/
+Drawing/
+Gestures/

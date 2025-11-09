@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
@@ -9,33 +10,46 @@ public class InputHandler : MonoBehaviour
     public bool JumpHeld { get; private set; }
     public bool JumpReleased { get; private set; }
 
-    private void Update()
+    private void LateUpdate()
     {
         ResetInputs();
-        
-        #if UNITY_EDITOR || UNITY_STANDALONE
-            HorizontalInput = Input.GetAxisRaw("Horizontal");
-            JumpHeld = Input.GetButton("Jump");
-            
-            if (Input.GetButtonDown("Jump"))
-                JumpPressed = true;
-
-            if (Input.GetButtonUp("Jump"))
-                JumpReleased = Input.GetButtonUp("Jump");
-
-        #elif UNITY_IOS || UNITY_ANDROID
-
-        #endif
     }
-
-    public void OnMove(float direction) => HorizontalInput = direction;
-    public void OnJumpPressed() => JumpPressed = true;
-    public void OnJumpHeld() => JumpHeld = true;
-    public void OnJumpReleased() => JumpReleased = true;
-
+    
     private void ResetInputs()
     {
         JumpPressed = false;
         JumpReleased = false;
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        float xValue = context.ReadValue<Vector2>().x;
+
+        float deadzone = 0.85f;
+        
+        if (Mathf.Abs(xValue) > deadzone)
+        {
+            HorizontalInput = xValue;
+        }
+        else
+        {
+            HorizontalInput = 0f;
+        }
+
+        Debug.Log("Horizontal Input: " + HorizontalInput);
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            JumpPressed = true;;
+        }
+        else if (context.canceled)
+        {
+            JumpReleased = true;
+        }
+
+        JumpHeld = context.ReadValueAsButton();
     }
 }

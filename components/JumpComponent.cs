@@ -110,6 +110,7 @@ public class JumpComponent : MonoBehaviour
             if (hasPlayedHardLandSound)
             {
                 SoundManager.Instance.PlayHardLanding();
+                GameManager.Instance.FallsCounted();
                 hasPlayedHardLandSound = false;
             }
             else
@@ -197,6 +198,7 @@ public class JumpComponent : MonoBehaviour
             {
                 hasPlayedHardLandSound = true;
             }
+
         }
     }
 
