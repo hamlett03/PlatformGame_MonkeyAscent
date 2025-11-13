@@ -13,6 +13,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Rigidbody2D Rb { get; private set; }
     public AnimationController Anim { get; private set; }
     public GroundChecker Ground { get; private set; }
+    public ClimbChecker Climb { get; private set; }
     public MovementComponent Movement { get; private set; }
     public JumpComponent Jump { get; private set; }
     public InputHandler Input { get; private set; }
@@ -28,6 +29,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         Rb = GetComponent<Rigidbody2D>();
         Ground = GetComponent<GroundChecker>();
+        Climb = GetComponent<ClimbChecker>();
         Movement = GetComponent<MovementComponent>();
         Jump = GetComponent<JumpComponent>();
         Anim = GetComponentInChildren<AnimationController>();
