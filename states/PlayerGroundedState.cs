@@ -18,6 +18,13 @@ public class PlayerGroundedState : PlayerBaseState
         var input = stateMachine.Input;
         float xInput = input.HorizontalInput;
 
+        // climb
+        if (stateMachine.Climb.IsClimbable() && Mathf.Abs(stateMachine.Input.VerticalInput) > 0.1f)
+        {
+            stateMachine.ChangeState(stateMachine.ClimbState);
+            return;
+        }
+
         // movement
         movement.Move(xInput);
         // flip sprite

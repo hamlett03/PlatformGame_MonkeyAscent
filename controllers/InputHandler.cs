@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour
 {
     public float HorizontalInput { get; private set; }
+    public float VerticalInput { get; private set; }
     public bool JumpPressed { get; private set; }
     public bool JumpHeld { get; private set; }
     public bool JumpReleased { get; private set; }
@@ -24,6 +25,7 @@ public class InputHandler : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         float xValue = context.ReadValue<Vector2>().x;
+        float yValue = context.ReadValue<Vector2>().y;
 
         float deadzone = 0.85f;
         
@@ -34,6 +36,15 @@ public class InputHandler : MonoBehaviour
         else
         {
             HorizontalInput = 0f;
+        }
+
+        if (Mathf.Abs(yValue) > deadzone) 
+        {
+            VerticalInput = yValue;
+        }
+        else
+        {
+            VerticalInput = 0f;
         }
 
         // Debug.Log("Horizontal Input: " + HorizontalInput);

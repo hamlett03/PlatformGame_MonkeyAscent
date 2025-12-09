@@ -6,8 +6,8 @@ using UnityEngine;
 public class ClimbChecker : MonoBehaviour
 {
     [SerializeField] private Transform point;
-    [SerializeField] private Vector2 offset = new Vector2(0.106f, 0.92f);
-    [SerializeField] private Vector2 checkSize = new Vector2(0.966f, 1f);
+    [SerializeField] private Vector2 offset = new Vector2(0.11f, 0.71f);
+    [SerializeField] private Vector2 checkSize = new Vector2(0.15f, 0.87f);
     [SerializeField] private LayerMask climbLayer;
 
     // returns true if the player is touching a climbable object
@@ -24,7 +24,6 @@ public class ClimbChecker : MonoBehaviour
                 0,
                 climbLayer
             );
-            // Debug.Log("Climbable detected");
         }
         else
         {

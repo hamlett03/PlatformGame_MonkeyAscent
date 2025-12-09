@@ -20,6 +20,13 @@ public class PlayerAirState : PlayerBaseState
     }
 
     public override void FixedUpdate() {
+        // climb
+        if (stateMachine.Climb.IsClimbable() && Mathf.Abs(stateMachine.Input.VerticalInput) > 0.1f)
+        {
+            stateMachine.ChangeState(stateMachine.ClimbState);
+            return;
+        }
+
         // transition to grounded state
         if (ground.IsGrounded() && Mathf.Abs(rb.velocity.y) < 0.1f)
         {

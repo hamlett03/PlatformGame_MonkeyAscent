@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class PlayerClimbState : PlayerBaseState
 {
-    private ClimbChecker climbChecker;
-    private ClimbComponent climbComponent;
-
     // constructor
     public PlayerClimbState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -12,12 +9,35 @@ public class PlayerClimbState : PlayerBaseState
 
     public override void Enter()
     {
+        anim.SetClimbing(true);
+        stateMachine.ClimbMovement.StartClimbing();
     }
 
     public override void Update()
     {
+        // inputs
+        float yInput = stateMachine.Input.VerticalInput;
+        float xInput = stateMachine.Input.HorizontalInput;
+
+        stateMachine.ClimbMovement.HandleClimb(yInput);
+
+        // if jump is pressed, charge a jump
+        if (!stateMachine.Climb.IsClimbable())
+        {
+            stateMachine.ChangeState(stateMachine.AirState);
+        }
+
+        if (!stateMachine.Climb.IsClimbable())
+        {
+            stateMachine.ChangeState(stateMachine.AirState);
+        }
     }
 
     public override void FixedUpdate() {}
-    public override void Exit() {}
+
+    public override void Exit() 
+    {
+        anim.SetClimbing(false);
+        stateMachine.ClimbMovement.StopClimbing();
+    }
 }

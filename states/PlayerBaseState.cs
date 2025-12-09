@@ -11,6 +11,8 @@ public abstract class PlayerBaseState
     protected GroundChecker ground;
     protected MovementComponent movement;
     protected JumpComponent jump;
+    protected ClimbChecker climbChecker;
+    protected ClimbComponent climbComponent;
 
     // constructor
     public PlayerBaseState(PlayerStateMachine stateMachine)
@@ -23,6 +25,8 @@ public abstract class PlayerBaseState
         ground = stateMachine.Ground;
         movement = stateMachine.Movement;
         jump = stateMachine.Jump;
+        climbChecker = stateMachine.Climb;
+        climbComponent = stateMachine.ClimbMovement;
     }
 
     // methos to be implemented by derived states

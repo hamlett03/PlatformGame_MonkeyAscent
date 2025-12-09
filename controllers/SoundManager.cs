@@ -138,4 +138,10 @@ public class SoundManager : MonoBehaviour
     {
         PlaySFX(walkSound);
     }
+
+    // climb sound
+    public void PlayClimb()
+    {
+        PlaySFX(climbSound);
+    }
 }

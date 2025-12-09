@@ -15,6 +15,7 @@ public class AnimationController : MonoBehaviour
     public void SetWalking(bool value) => animator.SetBool("isWalking", value);
     public void SetGrounded(bool value) => animator.SetBool("isGrounded", value);
     public void SetChargingJump(bool value) => animator.SetBool("isChargingJump", value);
+    public void SetClimbing(bool value) => animator.SetBool("isClimbing", value);
     public void SetVelocityY(float value) => animator.SetFloat("velocityY", value);
     public void TriggerJump() => animator.SetTrigger("Jump");
     public void TriggerDash() => animator.SetTrigger("Dash");

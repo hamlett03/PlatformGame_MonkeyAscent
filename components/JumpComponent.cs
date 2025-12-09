@@ -27,6 +27,7 @@ public class JumpComponent : MonoBehaviour
     private bool shouldPerformJump = false;
     private bool hasPlayedHardLandSound = false;
     private bool hasLanded = false;
+    private bool isClimbing = false;
     
     // Cached jump calculations
     private float initialVelocityX = 0f;

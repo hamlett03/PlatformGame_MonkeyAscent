@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(MovementComponent))]
 [RequireComponent(typeof(JumpComponent))]
+[RequireComponent(typeof(ClimbComponent))]
 [RequireComponent(typeof(GroundChecker))]
 [RequireComponent(typeof(InputHandler))]
 public class PlayerStateMachine : MonoBehaviour
@@ -16,11 +17,13 @@ public class PlayerStateMachine : MonoBehaviour
     public ClimbChecker Climb { get; private set; }
     public MovementComponent Movement { get; private set; }
     public JumpComponent Jump { get; private set; }
+    public ClimbComponent ClimbMovement { get; private set; }
     public InputHandler Input { get; private set; }
 
     // references to states
     public PlayerGroundedState GroundedState { get; private set; }
     public PlayerAirState AirState { get; private set; }
+    public PlayerClimbState ClimbState { get; private set; }
 
     // current state
     private PlayerBaseState currentState;
@@ -32,12 +35,14 @@ public class PlayerStateMachine : MonoBehaviour
         Climb = GetComponent<ClimbChecker>();
         Movement = GetComponent<MovementComponent>();
         Jump = GetComponent<JumpComponent>();
+        ClimbMovement = GetComponent<ClimbComponent>();
         Anim = GetComponentInChildren<AnimationController>();
         Input = GetComponent<InputHandler>();
 
         // instantiate states
         GroundedState = new PlayerGroundedState(this);
         AirState = new PlayerAirState(this);
+        ClimbState = new PlayerClimbState(this);
     }
 
     // Start is called before the first frame update
