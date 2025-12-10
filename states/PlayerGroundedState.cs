@@ -19,7 +19,7 @@ public class PlayerGroundedState : PlayerBaseState
         float xInput = input.HorizontalInput;
 
         // climb
-        if (stateMachine.Climb.IsClimbable() && Mathf.Abs(stateMachine.Input.VerticalInput) > 0.1f)
+        if (stateMachine.Climb.IsClimbable() && Mathf.Abs(stateMachine.Input.VerticalInput) > 0.1f && stateMachine.ClimbMovement.CanClimb())
         {
             stateMachine.ChangeState(stateMachine.ClimbState);
             return;
@@ -51,8 +51,6 @@ public class PlayerGroundedState : PlayerBaseState
         {
             stateMachine.ChangeState(stateMachine.AirState);
         }
-
-        Debug.Log("In Grounded State");
     }
 
     public override void FixedUpdate() {}

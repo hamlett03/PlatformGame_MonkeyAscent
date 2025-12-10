@@ -16,6 +16,7 @@ public class JumpComponent : MonoBehaviour
 
     private Rigidbody2D rb;
     private GroundChecker groundChecker;
+    private ClimbChecker climbChecker;
     private AnimationController anim;
 
     private float jumpChargeTimer = 0f;
@@ -27,7 +28,6 @@ public class JumpComponent : MonoBehaviour
     private bool shouldPerformJump = false;
     private bool hasPlayedHardLandSound = false;
     private bool hasLanded = false;
-    private bool isClimbing = false;
     
     // Cached jump calculations
     private float initialVelocityX = 0f;
@@ -41,16 +41,24 @@ public class JumpComponent : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         groundChecker = GetComponent<GroundChecker>();
+        climbChecker = GetComponent<ClimbChecker>();
         anim = GetComponentInChildren<AnimationController>();
         gravityMagnitude = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
         hasLanded = true;
+    }
+
+    public void ResetJumpState()
+    {
+        isJumping = false;
+        isCharging = false;
+        anim.SetChargingJump(false);
     }
 
     public void StartChargingJump(float horizontalInput)
     {
         if (isJumping || isCharging) return;
 
-        if (groundChecker.IsGrounded())
+        if (groundChecker.IsGrounded() || climbChecker.IsClimbable())
         {
             isCharging = true;
             jumpChargeTimer = 0f;
@@ -76,7 +84,7 @@ public class JumpComponent : MonoBehaviour
         if (debugDrawPath)
         {
             CalculateJumpTrajectory();
-            DrawJumpTrajectory();
+            // DrawJumpTrajectory();
         }
     }
 
@@ -99,7 +107,7 @@ public class JumpComponent : MonoBehaviour
             shouldPerformJump = false;
         }
 
-        if (isCharging && !groundChecker.IsGrounded())
+        if (isCharging && !groundChecker.IsGrounded() && !climbChecker.IsClimbable())
         {
             isCharging = false;
             anim.SetChargingJump(false);

@@ -16,12 +16,12 @@ public class PlayerAirState : PlayerBaseState
         jump.ApplyExtraGravity(input.JumpHeld);
         jump.CheckHardLanding();
 
-        Debug.Log("In Air State");
+        //Debug.Log("In Air State");
     }
 
     public override void FixedUpdate() {
         // climb
-        if (stateMachine.Climb.IsClimbable() && Mathf.Abs(stateMachine.Input.VerticalInput) > 0.1f)
+        if (stateMachine.Climb.IsClimbable() && Mathf.Abs(stateMachine.Input.VerticalInput) > 0.1f && stateMachine.ClimbMovement.CanClimb())
         {
             stateMachine.ChangeState(stateMachine.ClimbState);
             return;

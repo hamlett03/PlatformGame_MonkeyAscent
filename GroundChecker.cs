@@ -34,7 +34,6 @@ public class GroundChecker : MonoBehaviour
                 ))
                 {
                     groundedPoints++;
-                    // Debug.Log("Grounded: " + groundedPoints);
                 }
             }
         }

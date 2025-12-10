@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
     public void FallsCounted()
     {
         fallCounter++;
-        // Debug.Log("Fall Count: " + fallCounter);
         // notify listeners (UI, analytics, etc.)
         OnFallCountChanged?.Invoke(fallCounter);
     }

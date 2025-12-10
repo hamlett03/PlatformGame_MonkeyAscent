@@ -19,18 +19,52 @@ public class PlayerClimbState : PlayerBaseState
         float yInput = stateMachine.Input.VerticalInput;
         float xInput = stateMachine.Input.HorizontalInput;
 
-        stateMachine.ClimbMovement.HandleClimb(yInput);
+        var input = stateMachine.Input;
 
-        // if jump is pressed, charge a jump
-        if (!stateMachine.Climb.IsClimbable())
+        float cooldown = 0.5f;
+
+        movement.FlipSprite(xInput);
+
+        // jump off climb
+        if (input.JumpPressed)
+        {
+            jump.StartChargingJump(xInput);
+            //Debug.Log("Jumping off climb");
+        } else if (jump.IsCharging && input.JumpHeld)
+        {
+            jump.ContinueChargingJump(xInput);
+
+            // cooldown before next climb
+            if (!jump.IsCharging)
+            {
+                stateMachine.ClimbMovement.SetClimbCooldown(cooldown);
+                stateMachine.ChangeState(stateMachine.AirState);
+                return;
+            }
+        }
+        else if (jump.IsCharging && input.JumpReleased)
+        {
+            jump.RealeseJump();
+            stateMachine.ClimbMovement.SetClimbCooldown(cooldown);
+            stateMachine.ChangeState(stateMachine.AirState);
+            return;
+
+        }
+        else
+        {
+            if (!jump.IsCharging)
+            {
+                climbComponent.HandleClimb(yInput);
+            }
+        }
+
+        // if no longer climbable, go to air state
+        if (!stateMachine.Climb.IsClimbable() && !jump.IsCharging)
         {
             stateMachine.ChangeState(stateMachine.AirState);
         }
 
-        if (!stateMachine.Climb.IsClimbable())
-        {
-            stateMachine.ChangeState(stateMachine.AirState);
-        }
+        //Debug.Log("In Climb State");
     }
 
     public override void FixedUpdate() {}

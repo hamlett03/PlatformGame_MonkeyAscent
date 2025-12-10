@@ -42,8 +42,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip toucanSound;
 
     [SerializeField] private float walkSoundInterval = 0.3f;
+    [SerializeField] private float climbSoundInterval = 0.3f;
     private float walkSoundTimer = 0f;
+    private float climbSoundTimer = 0f;
     private bool isWalking = false;
+    private bool isClimbing = false;
+
 
     private void Awake()
     {
@@ -85,6 +89,17 @@ public class SoundManager : MonoBehaviour
             {
                 PlayWalkSound();
                 walkSoundTimer = walkSoundInterval;
+            }
+        }
+
+        // handle climbing sound loop
+        if (isClimbing)
+        {
+            climbSoundTimer -= Time.deltaTime;
+            if (climbSoundTimer <= 0f)
+            {
+                PlayClimb();
+                climbSoundTimer = climbSoundInterval;
             }
         }
     }
@@ -143,5 +158,20 @@ public class SoundManager : MonoBehaviour
     public void PlayClimb()
     {
         PlaySFX(climbSound);
+    }
+
+    public void StartClimbSound()
+    {
+        if (!isClimbing)
+        {
+            isClimbing = true;
+            climbSoundTimer = 0f;
+        }
+    }
+
+    public void StopClimbSound()
+    {
+        isClimbing = false;
+        climbSoundTimer = 0f;
     }
 }
