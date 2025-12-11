@@ -174,4 +174,16 @@ public class SoundManager : MonoBehaviour
         isClimbing = false;
         climbSoundTimer = 0f;
     }
+
+    // power up sound
+    public void PlayPowerUpSound()
+    {
+        PlaySFX(powerUpSound);
+    }
+
+    // dash sound
+    public void PlayDashSound()
+    {
+        PlaySFX(dashSound);
+    }
 }

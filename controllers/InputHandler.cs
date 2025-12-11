@@ -10,6 +10,14 @@ public class InputHandler : MonoBehaviour
     public bool JumpPressed { get; private set; }
     public bool JumpHeld { get; private set; }
     public bool JumpReleased { get; private set; }
+    public bool AbilityPressed { get; private set; }
+
+    private PlayerInput playerInput;
+
+    private void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+    }
 
     private void LateUpdate()
     {
@@ -20,6 +28,7 @@ public class InputHandler : MonoBehaviour
     {
         JumpPressed = false;
         JumpReleased = false;
+        AbilityPressed = false;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -46,8 +55,6 @@ public class InputHandler : MonoBehaviour
         {
             VerticalInput = 0f;
         }
-
-        // Debug.Log("Horizontal Input: " + HorizontalInput);
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -62,5 +69,13 @@ public class InputHandler : MonoBehaviour
         }
 
         JumpHeld = context.ReadValueAsButton();
+    }
+
+    public void OnUseAbility(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AbilityPressed = true;
+        }
     }
 }

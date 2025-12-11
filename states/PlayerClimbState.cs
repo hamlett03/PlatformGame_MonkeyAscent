@@ -11,6 +11,9 @@ public class PlayerClimbState : PlayerBaseState
     {
         anim.SetClimbing(true);
         stateMachine.ClimbMovement.StartClimbing();
+
+        // reset hability
+        stateMachine.HasUsedAbility = false;
     }
 
     public override void Update()

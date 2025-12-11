@@ -10,6 +10,9 @@ public class PlayerGroundedState : PlayerBaseState
     public override void Enter()
     {
         anim.SetGrounded(true);
+
+        // reset ability
+        stateMachine.HasUsedAbility = false;
     }
 
     public override void Update()

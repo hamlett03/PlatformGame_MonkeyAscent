@@ -24,9 +24,12 @@ public class PlayerStateMachine : MonoBehaviour
     public PlayerGroundedState GroundedState { get; private set; }
     public PlayerAirState AirState { get; private set; }
     public PlayerClimbState ClimbState { get; private set; }
+    public PlayerDashState PlayerDashState { get; private set; }
 
     // current state
     private PlayerBaseState currentState;
+
+    public bool HasUsedAbility { get; set; } = false;
 
     private void Awake()
     {
@@ -43,6 +46,7 @@ public class PlayerStateMachine : MonoBehaviour
         GroundedState = new PlayerGroundedState(this);
         AirState = new PlayerAirState(this);
         ClimbState = new PlayerClimbState(this);
+        PlayerDashState = new PlayerDashState(this);
     }
 
     // Start is called before the first frame update
