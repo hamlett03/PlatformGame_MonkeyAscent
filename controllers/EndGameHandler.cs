@@ -77,7 +77,7 @@ public class EndGameHandler : MonoBehaviour
         
             if (popupTexts.Length > 2 && popupTexts[1] != null)
             {
-                popupTexts[2].text = "Gracias por jugar la demo!";
+                popupTexts[2].text = "Gracias por jugar";
             }
 
             if (popupTexts.Length > 3 && popupTexts[2] != null)

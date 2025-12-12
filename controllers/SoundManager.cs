@@ -47,6 +47,9 @@ public class SoundManager : MonoBehaviour
     private float climbSoundTimer = 0f;
     private bool isWalking = false;
     private bool isClimbing = false;
+    private bool isMusicMuted = false;
+    private bool isSfxMuted = false;
+    private bool isAmbientMuted = false;
 
 
     private void Awake()
@@ -186,4 +189,27 @@ public class SoundManager : MonoBehaviour
     {
         PlaySFX(dashSound);
     }
+
+    // menu
+    public void ToggleMusic()
+    {
+        isMusicMuted = !isMusicMuted;
+        musicSource.mute = isMusicMuted;
+    }
+
+    public void ToggleSfx()
+    {
+        isSfxMuted = !isSfxMuted;
+        sfxSource.mute = isSfxMuted;
+    }
+
+    public void ToggleAmbient()
+    {
+        isAmbientMuted = !isAmbientMuted;
+        ambientSource.mute = isAmbientMuted;
+    }
+
+    public bool IsMusicMuted() => isMusicMuted;
+    public bool IsSfxMuted() => isSfxMuted;
+    public bool IsAmbientMuted() => isAmbientMuted;
 }
