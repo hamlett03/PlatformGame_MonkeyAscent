@@ -10,6 +10,11 @@ public class PickUpFruit : MonoBehaviour
 
     private bool isCollected = false;
 
+    private void Start()
+    {
+        StartCoroutine(CheckIfCollected());
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (isCollected) return;
@@ -59,5 +64,20 @@ public class PickUpFruit : MonoBehaviour
         }
         
         Destroy(gameObject, timeToDestroy);
+    }
+
+    private System.Collections.IEnumerator CheckIfCollected()
+    {
+        yield return null;
+
+        AbilityManager manager = FindObjectOfType<AbilityManager>();
+
+        if (manager != null)
+        {
+            if (manager.HasAbility(abilityToUnlock))
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }

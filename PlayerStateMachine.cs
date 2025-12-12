@@ -52,6 +52,29 @@ public class PlayerStateMachine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // charge saved game
+        if (GameManager.Instance.IsLoadingContinue && GameManager.Instance.HasSaveFile())
+        {
+            // move the player to the saved position
+            Vector3 savedPos = GameManager.Instance.GetSavedPosition();
+            transform.position = savedPos;
+
+            // camera position
+            if (Camera.main != null)
+            {
+                Vector3 camPos = GameManager.Instance.GetSavedCameraPosition();
+                Camera.main.transform.position = camPos;
+            }
+
+            GameManager.Instance.LoadFalls();
+
+            GameManager.Instance.LoadAbilities(GetComponent<AbilityManager>());
+        }
+        else
+        {
+            GameManager.Instance.ClearSave();
+        }
+
         currentState = GroundedState;
         currentState.Enter();
     }
@@ -73,5 +96,15 @@ public class PlayerStateMachine : MonoBehaviour
         currentState.Exit();
         currentState = newState;
         currentState.Enter();
+    }
+
+    // automatic save when quitting the game
+    private void OnApplicationQuit()
+    {
+        if (FindObjectOfType<GameManager>() != null)
+        {
+            FindObjectOfType<GameManager>().SaveGame(transform.position, GetComponent<AbilityManager>());
+            Debug.Log("Game saved successfully.");
+        }
     }
 }

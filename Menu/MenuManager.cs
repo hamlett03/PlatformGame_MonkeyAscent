@@ -17,6 +17,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] mainTexts;
     [SerializeField] private float mainArrowOffset = 350f;
 
+    // color for disable option
+    [SerializeField] private Color disabledColor = Color.gray;
+
     [Header("Settings UI elements")]
     [SerializeField] private RectTransform arrowSettings;
     [SerializeField] private TextMeshProUGUI[] settingsTexts;
@@ -35,9 +38,11 @@ public class MenuManager : MonoBehaviour
     private int currentSettingsIndex = 0;
     private bool isInSettings = false;
 
+    // saved
+    private bool hasSavedGame = false;
+
     // input 
     private float verticalInput;
-    private bool isPressed;
     private bool isPressedDown;
     private bool selectPressed;
 
@@ -46,6 +51,15 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
+        // verify if there is a saved game
+        if (GameManager.Instance != null)
+        {
+            hasSavedGame = GameManager.Instance.HasSaveFile();
+        }
+
+        // if exist a saved game, start in continue game
+        currentMainIndex = hasSavedGame ? 0 : 1;
+
         mainMenuPanel.SetActive(true);
         settingsPanel.SetActive(false);
         UpdateMainVisuals();
@@ -93,7 +107,10 @@ public class MenuManager : MonoBehaviour
         if (!isInSettings)
         {
             currentMainIndex--;
-            if (currentMainIndex < 0)
+
+            int minIndex = hasSavedGame ? 0 : 1;
+
+            if (currentMainIndex < minIndex)
             {
                 currentMainIndex = 3;
             }
@@ -119,7 +136,7 @@ public class MenuManager : MonoBehaviour
             currentMainIndex++;
             if (currentMainIndex > 3)
             {
-                currentMainIndex = 0;
+                currentMainIndex = hasSavedGame ? 0 : 1;
             }
             UpdateMainVisuals();
         }
@@ -136,9 +153,16 @@ public class MenuManager : MonoBehaviour
 
     private void UpdateMainVisuals()
     {
-        foreach (var txt in mainTexts)
+        for (int i = 0; i < mainTexts.Length; i++)
         {
-            txt.color = unselectedColor;
+            if (i == 0 && !hasSavedGame)
+            {
+                mainTexts[i].color = disabledColor;
+            }
+            else
+            {
+                mainTexts[i].color = unselectedColor;
+            }
         }
 
         // Update the color of the selected text
@@ -191,8 +215,15 @@ public class MenuManager : MonoBehaviour
             switch (currentMainIndex)
             {
                 case 0:
+                    if (hasSavedGame)
+                    {
+                        GameManager.Instance.IsLoadingContinue = true;
+                        SceneManager.LoadScene("Game_scene");
+                    }
                     break;
                 case 1:
+                    GameManager.Instance.IsLoadingContinue = false;
+                    GameManager.Instance.ClearSave();
                     SceneManager.LoadScene("Game_scene");
                     break;
                 case 2:

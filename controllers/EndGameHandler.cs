@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class EndGameHandler : MonoBehaviour
@@ -46,7 +47,7 @@ public class EndGameHandler : MonoBehaviour
         }
 
         // movement 
-        yield return StartCoroutine(FlySquence());
+        yield return StartCoroutine(FlySequence());
 
         Debug.Log("End Game Sequence Completed");
     }
@@ -89,7 +90,7 @@ public class EndGameHandler : MonoBehaviour
         }
     }
 
-    private IEnumerator FlySquence()
+    private IEnumerator FlySequence()
     {
         float timer = 0f;
         Vector3 center = circleCenter != null ? circleCenter.position : transform.position;
@@ -132,5 +133,12 @@ public class EndGameHandler : MonoBehaviour
         }
 
         gameObject.SetActive(false);
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ClearSave();
+        }
+
+        SceneManager.LoadScene("ui");
     }
 }

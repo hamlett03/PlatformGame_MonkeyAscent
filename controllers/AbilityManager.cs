@@ -9,6 +9,7 @@ public class AbilityManager : MonoBehaviour
 
     // list of abilities
     public List<AbilityData> unlockedAbilities = new List<AbilityData>();
+    public List<AbilityData> allAbilitiesDataBase;
 
     // actual ability selected
     private int currentIndex = -1;
@@ -76,5 +77,20 @@ public class AbilityManager : MonoBehaviour
         {
             OnAbilityChanged?.Invoke(null);
         }
+    }
+
+    public void RestoreAbilityByName(string name)
+    {
+        AbilityData abilityToRestore = allAbilitiesDataBase.Find(a => a.abilityName == name);
+
+        if (abilityToRestore != null)
+        {
+            UnlockAbility(abilityToRestore);
+        }
+    }
+
+    public bool HasAbility(AbilityData abilityToCheck)
+    {
+        return unlockedAbilities.Contains(abilityToCheck);
     }
 }
