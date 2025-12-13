@@ -81,11 +81,11 @@ public class JumpComponent : MonoBehaviour
             RealeseJump();
         }
 
-        if (debugDrawPath)
-        {
-            CalculateJumpTrajectory();
+        // if (debugDrawPath)
+        // {
+            // CalculateJumpTrajectory();
             // DrawJumpTrajectory();
-        }
+        // }
     }
 
     public void RealeseJump()

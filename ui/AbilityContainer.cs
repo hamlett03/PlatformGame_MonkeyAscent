@@ -10,6 +10,12 @@ public class AbilityContainer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI abilityNameText;
 
     private AbilityManager abilityManager;
+    private CanvasGroup canvasGroup;
+
+    private void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
 
     private void Start()
     {
@@ -33,24 +39,40 @@ public class AbilityContainer : MonoBehaviour
 
     private void UpdateUI(AbilityData ability)
     {
-        if (ability != null)
+        if (abilityManager != null && abilityManager.unlockedAbilities.Count > 0)
         {
-            abilityIcon.sprite = ability.abilityIcon;
-            abilityIcon.enabled = true;
-
-            if (abilityNameText != null)
+            ShowContainer(true);
+            if (ability != null)
             {
-                abilityNameText.text = ability.abilityName;
+                abilityIcon.sprite = ability.abilityIcon;
+                abilityIcon.enabled = true; 
+                if (abilityNameText != null)
+                {           
+                    abilityNameText.text = ability.abilityName;
+                }
+            }
+            else 
+            {
+                abilityIcon.enabled = false;
+                if (abilityNameText != null)
+                {
+                abilityNameText.text = "X";
+                }
             }
         }
         else 
         {
-            abilityIcon.enabled = false;
+            ShowContainer(false);
+        }
+    }
 
-            if (abilityNameText != null)
-            {
-                abilityNameText.text = "X";
-            }
+    private void ShowContainer(bool show)
+    {
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = show ? 1f : 0f; 
+            canvasGroup.interactable = show;
+            canvasGroup.blocksRaycasts = show;
         }
     }
 

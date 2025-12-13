@@ -60,6 +60,11 @@ public class PickUpFruit : MonoBehaviour
                 popupTexts[1].text = "Puedes ver tus habilidades en la parte superior izquierda";
             }
 
+            if (popupTexts.Length > 2 && popupTexts[2] != null)
+            {
+                popupTexts[2].text = "Presiona la habilidad mientras estes en el aire";
+            }
+
             Destroy(popup, 5f);
         }
         

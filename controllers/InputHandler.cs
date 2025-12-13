@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class InputHandler : MonoBehaviour
     public bool JumpHeld { get; private set; }
     public bool JumpReleased { get; private set; }
     public bool AbilityPressed { get; private set; }
+
+    public event Action OnAbilitySelectionEvent;
+    public event Action OnPauseEvent;
 
     private PlayerInput playerInput;
 
@@ -36,6 +40,13 @@ public class InputHandler : MonoBehaviour
         float xValue = context.ReadValue<Vector2>().x;
         float yValue = context.ReadValue<Vector2>().y;
 
+        if (Time.timeScale == 0f)
+        {
+            HorizontalInput = 0f;
+            VerticalInput = 0f;
+            return;
+        }
+
         float deadzone = 0.85f;
         
         if (Mathf.Abs(xValue) > deadzone)
@@ -59,6 +70,8 @@ public class InputHandler : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (Time.timeScale == 0f) return;
+
         if (context.started)
         {
             JumpPressed = true;;
@@ -73,9 +86,27 @@ public class InputHandler : MonoBehaviour
 
     public void OnUseAbility(InputAction.CallbackContext context)
     {
+        if (Time.timeScale == 0f) return;
+
         if (context.started)
         {
             AbilityPressed = true;
+        }
+    }
+
+    public void OnAbilitySelection(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OnAbilitySelectionEvent?.Invoke();
+        }
+    }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OnPauseEvent?.Invoke();
         }
     }
 }

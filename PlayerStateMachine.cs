@@ -104,7 +104,6 @@ public class PlayerStateMachine : MonoBehaviour
         if (FindObjectOfType<GameManager>() != null)
         {
             FindObjectOfType<GameManager>().SaveGame(transform.position, GetComponent<AbilityManager>());
-            Debug.Log("Game saved successfully.");
         }
     }
 }

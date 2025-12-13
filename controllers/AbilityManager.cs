@@ -22,6 +22,14 @@ public class AbilityManager : MonoBehaviour
         stateMachine = GetComponent<PlayerStateMachine>();
     }
 
+    private void Start()
+    {
+        if (stateMachine.Input != null)
+        {
+            stateMachine.Input.OnAbilitySelectionEvent += CiclyNextAbility;
+        }
+    }
+
     private void Update()
     {
         if (stateMachine.Input.AbilityPressed)

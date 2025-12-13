@@ -45,6 +45,7 @@ public class MenuManager : MonoBehaviour
     private float verticalInput;
     private bool isPressedDown;
     private bool selectPressed;
+    private bool ignoreInputs = true;
 
     private float inputCooldown = 0.2f;
     private float lastInputTime;
@@ -63,10 +64,14 @@ public class MenuManager : MonoBehaviour
         mainMenuPanel.SetActive(true);
         settingsPanel.SetActive(false);
         UpdateMainVisuals();
+
+        StartCoroutine(EnableInputsRoutine());
     }
 
     private void Update()
     {
+        if (ignoreInputs) return;
+        
         if (Time.time - lastInputTime > inputCooldown)
         {
             if (verticalInput > 0.2f)
@@ -86,6 +91,13 @@ public class MenuManager : MonoBehaviour
             selectPressed = false;
             ConfirmSelection();
         }
+    }
+
+    private System.Collections.IEnumerator EnableInputsRoutine()
+    {
+        ignoreInputs = true;
+        yield return new WaitForSeconds(0.5f);
+        ignoreInputs = false;
     }
 
     public void OnNavigate(InputAction.CallbackContext context)
