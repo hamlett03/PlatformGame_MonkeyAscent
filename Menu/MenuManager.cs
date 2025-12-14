@@ -108,6 +108,8 @@ public class MenuManager : MonoBehaviour
 
     public void OnSubmit(InputAction.CallbackContext context)
     {
+        if (ignoreInputs) return;
+
         if (context.started)
         {
             selectPressed = true;
